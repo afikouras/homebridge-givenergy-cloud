@@ -1,0 +1,25 @@
+{
+  "name": "homebridge-givenergy-cloud",
+  "version": "1.0.1",
+  "description": "a lightweight module to read solar and battery data into homekit from the givenergy cloud api",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "author": "alasdair fikouras",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.5"
+  },
+  "engines": {
+    "node": ">14.0.0",
+    "homebridge": ">1.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3"
+  }
+}
