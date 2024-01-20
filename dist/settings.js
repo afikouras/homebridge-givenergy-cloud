@@ -8,5 +8,5 @@ exports.PLATFORM_NAME = 'GivEnergy';
 /**
  * This must match the name of your plugin as defined the package.json
  */
-exports.PLUGIN_NAME = 'homebridge-givenergy';
+exports.PLUGIN_NAME = 'homebridge-givenergy-cloud';
 //# sourceMappingURL=settings.js.map

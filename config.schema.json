@@ -6,10 +6,37 @@
     "type": "object",
     "properties": {
       "name": {
-        "title": "Name",
+        "title": "Platform Name",
+        "description": "The name of the platform as it should appear in Homebridge.",
         "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
+        "default": "GivEnergy",
+        "required": true
+      },
+      "apiKey": {
+        "title": "API Key",
+        "description": "Your GivEnergy API Key for accessing the cloud service.",
+        "type": "string",
+        "required": true
+      },
+      "inverterId": {
+        "title": "Inverter ID",
+        "description": "The ID of your GivEnergy inverter.",
+        "type": "string",
+        "required": true
+      },
+      "maxSolarPower": {
+        "title": "Maximum Solar Power",
+        "description": "The maximum power capacity of your solar array in watts.",
+        "type": "number",
+        "default": 6100,
+        "required": true
+      },
+      "refreshRate": {
+        "title": "Refresh Rate",
+        "description": "How often to fetch data from the GivEnergy API (in milliseconds).",
+        "type": "number",
+        "default": 60000,
+        "required": true
       }
     }
   }
