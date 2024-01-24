@@ -1,6 +1,6 @@
 {
   "name": "homebridge-givenergy-cloud",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "a lightweight module to read solar and battery data into homekit from the givenergy cloud api",
   "main": "dist/index.js",
   "scripts": {
