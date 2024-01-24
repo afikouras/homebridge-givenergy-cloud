@@ -98,7 +98,6 @@ class GivEnergyPlatform {
     req.end();
   }
 }
-
 class GivEnergySolarAccessory {
   private log: any;
   private name: string;
@@ -107,6 +106,7 @@ class GivEnergySolarAccessory {
   private solarService: any;
   private solarPowerValue: number;
   private platform: any;
+
   constructor(log, config, Service, Characteristic, platform) {
     this.log = log;
     this.name = "Solar Power";
@@ -118,8 +118,10 @@ class GivEnergySolarAccessory {
 
     this.solarService
       .getCharacteristic(Characteristic.Brightness)
-      .on('set', this.setSolarPowerState.bind(this));
+      .on('set', this.setSolarPowerBrightness.bind(this));
     
+    // Initial update with current value
+    this.updateSolarPowerValue(this.solarPowerValue);
   }
 
   getServices() {
@@ -128,7 +130,7 @@ class GivEnergySolarAccessory {
 
   updateSolarPowerValue(value) {
     this.solarPowerValue = value;
-    const isOn = value >0;
+    const isOn = value > 0;
 
     this.solarService
       .getCharacteristic(Characteristic.Brightness)
@@ -138,10 +140,17 @@ class GivEnergySolarAccessory {
       .getCharacteristic(Characteristic.On)
       .updateValue(isOn);
   }
-  setSolarPowerState(value, callback){
-    this.updateSolarPowerValue(this.solarPowerValue);
+
+  setSolarPowerBrightness(value, callback) {
+    if (value > 0) {
+      this.updateSolarPowerValue(value);
+    } else {
+      // Revert to the last known state if turned off
+      this.updateSolarPowerValue(this.solarPowerValue);
+    }
     callback();
   }
+
   getSolarPower(callback) {
     callback(null, this.solarPowerValue);
   }
@@ -190,8 +199,12 @@ class GivEnergyBatteryAccessory {
   }
 
   setBatteryLevelState(value, callback) {
-    
-    this.updateBatteryLevel(this.batteryLevel);
+    if (value > 0) {
+      this.updateBatteryLevel(value);
+    } else {
+      // Revert to the last known state if turned off
+      this.updateBatteryLevel(this.batteryLevel);
+    }
     callback();
   }
 
