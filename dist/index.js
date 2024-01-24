@@ -111,16 +111,24 @@ class GivEnergySolarAccessory {
         this.platform = platform;
         this.solarService
             .getCharacteristic(Characteristic.Brightness)
-            .on('get', this.getSolarPower.bind(this));
+            .on('set', this.setSolarPowerState.bind(this));
     }
     getServices() {
         return [this.solarService];
     }
     updateSolarPowerValue(value) {
         this.solarPowerValue = value;
+        const isOn = value > 0;
         this.solarService
             .getCharacteristic(Characteristic.Brightness)
-            .updateValue(this.solarPowerValue);
+            .updateValue(isOn ? this.solarPowerValue : 0);
+        this.solarService
+            .getCharacteristic(Characteristic.On)
+            .updateValue(isOn);
+    }
+    setSolarPowerState(value, callback) {
+        this.updateSolarPowerValue(this.solarPowerValue);
+        callback();
     }
     getSolarPower(callback) {
         callback(null, this.solarPowerValue);
