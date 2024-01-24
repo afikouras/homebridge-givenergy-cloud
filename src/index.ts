@@ -190,12 +190,8 @@ class GivEnergyBatteryAccessory {
   }
 
   setBatteryLevelState(value, callback) {
-    if (value > 0) {
-      this.updateBatteryLevel(value);
-    } else {
-      // Revert to the last known state if turned off
-      this.updateBatteryLevel(this.batteryLevel);
-    }
+    
+    this.updateBatteryLevel(this.batteryLevel);
     callback();
   }
 
