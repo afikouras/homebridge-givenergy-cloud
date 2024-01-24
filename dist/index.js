@@ -123,20 +123,15 @@ class GivEnergySolarAccessory {
         this.solarPowerValue = value;
         const isOn = value > 0;
         this.solarService
-            .getCharacteristic(Characteristic.Brightness)
-            .updateValue(isOn ? this.solarPowerValue : 0);
+            .getCharacteristic(this.Characteristic.Brightness)
+            .updateValue(value);
         this.solarService
-            .getCharacteristic(Characteristic.On)
+            .getCharacteristic(this.Characteristic.On)
             .updateValue(isOn);
     }
     setSolarPowerBrightness(value, callback) {
-        if (value > 0) {
-            this.updateSolarPowerValue(value);
-        }
-        else {
-            // Revert to the last known state if turned off
-            this.updateSolarPowerValue(this.solarPowerValue);
-        }
+        // Revert to the last known state if turned off
+        this.updateSolarPowerValue(this.solarPowerValue);
         callback();
     }
     getSolarPower(callback) {
@@ -165,20 +160,14 @@ class GivEnergyBatteryAccessory {
         this.batteryLevel = value;
         const isOn = value > 0;
         this.batteryService
-            .getCharacteristic(Characteristic.Brightness)
-            .updateValue(isOn ? this.batteryLevel : 0);
+            .getCharacteristic(this.Characteristic.Brightness)
+            .updateValue(value);
         this.batteryService
-            .getCharacteristic(Characteristic.On)
+            .getCharacteristic(this.Characteristic.On)
             .updateValue(isOn);
     }
     setBatteryLevelState(value, callback) {
-        if (value > 0) {
-            this.updateBatteryLevel(value);
-        }
-        else {
-            // Revert to the last known state if turned off
-            this.updateBatteryLevel(this.batteryLevel);
-        }
+        this.updateBatteryLevel(this.batteryLevel);
         callback();
     }
     getBatteryLevel(callback) {
