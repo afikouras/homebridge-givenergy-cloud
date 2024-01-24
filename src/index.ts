@@ -25,6 +25,7 @@ class GivEnergyPlatform {
     this.maxSolarPower = this.config.maxSolarPower || 6100; //approx 15 panels worth of wats
     this.refreshRate = this.config.refreshRate || 600000; //make a query by default every 10 mins, dont know how often you can query the api
     this.discoverAccessories();
+    this.fetchGivEnergyData();
   }
 
   discoverAccessories() {
@@ -145,7 +146,6 @@ class GivEnergySolarAccessory {
     callback(null, this.solarPowerValue);
   }
 }
-
 class GivEnergyBatteryAccessory {
   private log: any;
   private name: string;
@@ -166,7 +166,10 @@ class GivEnergyBatteryAccessory {
 
     this.batteryService
       .getCharacteristic(Characteristic.Brightness)
-      .on('get', this.getBatteryLevel.bind(this));
+      .on('set', this.setBatteryLevelState.bind(this));
+    
+    // Initial update with current value
+    this.updateBatteryLevel(this.batteryLevel);
   }
 
   getServices() {
@@ -175,12 +178,28 @@ class GivEnergyBatteryAccessory {
 
   updateBatteryLevel(value) {
     this.batteryLevel = value;
+    const isOn = value > 0;
+
     this.batteryService
       .getCharacteristic(Characteristic.Brightness)
-      .updateValue(this.batteryLevel);
+      .updateValue(isOn ? this.batteryLevel : 0);
+
+    this.batteryService
+      .getCharacteristic(Characteristic.On)
+      .updateValue(isOn);
+  }
+
+  setBatteryLevelState(value, callback) {
+    if (value > 0) {
+      this.updateBatteryLevel(value);
+    } else {
+      // Revert to the last known state if turned off
+      this.updateBatteryLevel(this.batteryLevel);
+    }
+    callback();
   }
 
   getBatteryLevel(callback) {
-  callback(null, this.batteryLevel);
+    callback(null, this.batteryLevel);
   }
 }
